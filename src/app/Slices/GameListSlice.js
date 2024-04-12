@@ -78,11 +78,11 @@ export const AddGameListData = (formData) => async () => {
   }
 };
 
-export const updateGameListData = (game_id, formData) => async (dispatch) => {
+export const updateGameListData = (game_id, updatedGameData) => async (dispatch) => {
   try {
     const response = await axios.put(
       import.meta.env.VITE_BASE_URL + `profile/updateGameList/${game_id}`,
-      formData,
+      updatedGameData,
       {
         headers: {
           "Content-Type": "application/json",

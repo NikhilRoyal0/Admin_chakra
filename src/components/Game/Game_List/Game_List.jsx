@@ -159,13 +159,14 @@ export default function GameList() {
 
   const handleSaveChanges = () => {
     setIsSaveLoading(true);
-  
+
     const { game_id, ...updatedGameData } = editedGameListData;
-  
-    updatedGameData.game_thumbnail = selectedFile || updatedGameData.game_thumbnail;
-  
-    dispatch(updateGameListData(updatedGameData.game_id, formData))
-    .then(() => {
+
+    updatedGameData.game_thumbnail =
+      selectedFile || updatedGameData.game_thumbnail;
+
+    dispatch(updateGameListData(game_id, updatedGameData)) // Pass game_id here
+      .then(() => {
         setIsEditModalOpen(false);
         setIsSaveLoading(false);
         toast({
@@ -188,8 +189,6 @@ export default function GameList() {
         console.error("Error updating GameList:", error);
       });
   };
-  
-  
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -214,7 +213,10 @@ export default function GameList() {
   };
 
   const handleEditGameList = (gameList) => {
-    setEditedGameListData(gameList);
+    setEditedGameListData({
+      ...gameList,
+      game_id: gameList.game_id, // Ensure you include the game_id
+    });
     setIsEditModalOpen(true);
   };
 
@@ -318,127 +320,175 @@ export default function GameList() {
             <ModalHeader>Add GameList</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Input
-                mb="3"
-                placeholder="GameList Title"
-                value={newGameListData.game_title}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_title: e.target.value,
-                  })
-                }
-                required
-              />
-              <Input
-                mb="3"
-                placeholder="GameList Info"
-                value={newGameListData.game_info}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_info: e.target.value,
-                  })
-                }
-                required
-              />
-              <Input
-                mb="3"
-                placeholder="Game duration seconds"
-                value={newGameListData.game_duration_seconds}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_duration_seconds: e.target.value,
-                  })
-                }
-                required
-              />
-              <Input
-                mb="3"
-                placeholder="Game freeze seconds"
-                value={newGameListData.game_freeze_seconds}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_freeze_seconds: e.target.value,
-                  })
-                }
-                required
-              />
-              <Input
-                mb="3"
-                placeholder="Game starting price "
-                value={newGameListData.game_starting_price}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_starting_price: e.target.value,
-                  })
-                }
-                required
-              />
-              <Input
-                mb="3"
-                placeholder="game_max_price "
-                value={newGameListData.game_max_price}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_max_price: e.target.value,
-                  })
-                }
-                required
-              />
-              <Input
-                mb="3"
-                placeholder="Game not played "
-                value={newGameListData.game_not_played}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_not_played: e.target.value,
-                  })
-                }
-                required
-              />
-              <Select
-                mb="3"
-                placeholder="Select Category"
-                value={newGameListData.game_category_id}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_category_id: e.target.value,
-                  })
-                }
-                isRequired
-              >
-                {categoryData.map((category) => (
-                  <option
-                    key={category.category_id}
-                    value={category.category_id}
-                  >
-                    {category.category_title}
-                  </option>
-                ))}
-              </Select>
-              <Select
-                mb="3"
-                placeholder="Select Status"
-                value={newGameListData?.game_status || ""}
-                onChange={(e) =>
-                  setNewGameListData({
-                    ...newGameListData,
-                    game_status: e.target.value,
-                  })
-                }
-                required
-              >
-                <option value="pending">Pending</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-              </Select>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Game Title
+                </Text>
+                <Input
+                  mb="3"
+                  placeholder="Game Title"
+                  value={newGameListData.game_title}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_title: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Box>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Game Info
+                </Text>
+                <Input
+                  mb="3"
+                  placeholder="Game Info"
+                  value={newGameListData.game_info}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_info: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Box>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Game duration seconds
+                </Text>
+                <Input
+                  mb="3"
+                  placeholder="Game duration seconds"
+                  value={newGameListData.game_duration_seconds}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_duration_seconds: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Box>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Game freeze seconds
+                </Text>
+                <Input
+                  mb="3"
+                  placeholder="Game freeze seconds"
+                  value={newGameListData.game_freeze_seconds}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_freeze_seconds: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Box>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Game starting price
+                </Text>
+                <Input
+                  mb="3"
+                  placeholder="Game starting price"
+                  value={newGameListData.game_starting_price}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_starting_price: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Box>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Game max price
+                </Text>
+                <Input
+                  mb="3"
+                  placeholder="Game max price"
+                  value={newGameListData.game_max_price}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_max_price: e.target.value,
+                    })
+                  }
+                  required
+                />
+              </Box>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Game Not Played
+                </Text>
+                <Select
+                  mb="3"
+                  placeholder="Game Not Played"
+                  value={newGameListData.game_not_played}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_not_played: e.target.value,
+                    })
+                  }
+                  required
+                >
+                  <option value="0">True</option>
+                  <option value="1">False</option>
+                </Select>
+              </Box>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Select Category
+                </Text>
+                <Select
+                  mb="3"
+                  placeholder="Select Category"
+                  value={newGameListData.game_category_id}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_category_id: e.target.value,
+                    })
+                  }
+                  isRequired
+                >
+                  {categoryData.map((category) => (
+                    <option
+                      key={category.category_id}
+                      value={category.category_id}
+                    >
+                      {category.category_title}
+                    </option>
+                  ))}
+                </Select>
+              </Box>
+              <Box>
+                <Text mb="1" color="gray.600">
+                  Select Status
+                </Text>
+                <Select
+                  mb="3"
+                  placeholder="Select Status"
+                  value={newGameListData.game_status}
+                  onChange={(e) =>
+                    setNewGameListData({
+                      ...newGameListData,
+                      game_status: e.target.value,
+                    })
+                  }
+                  required
+                >
+                  <option value="pending">Pending</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </Select>
+              </Box>
               {newGameListData.game_thumbnail && (
                 <Box mb="3">
                   <Image
@@ -524,80 +574,150 @@ export default function GameList() {
           <ModalHeader>Edit GameList</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Input
-              mb="3"
-              placeholder="GameList Title"
-              value={editedGameListData?.game_title || ""}
-              onChange={(e) =>
-                setEditedGameListData({
-                  ...editedGameListData,
-                  game_title: e.target.value,
-                })
-              }
-              required
-            />
-            <Input
-              mb="3"
-              placeholder="GameList Info"
-              value={editedGameListData?.game_info || ""}
-              onChange={(e) =>
-                setEditedGameListData({
-                  ...editedGameListData,
-                  game_info: e.target.value,
-                })
-              }
-              required
-            />
-            <Input
-              mb="3"
-              placeholder="Game Not Played"
-              value={editedGameListData?.game_not_played || ""}
-              onChange={(e) =>
-                setEditedGameListData({
-                  ...editedGameListData,
-                  game_not_played: e.target.value,
-                })
-              }
-              required
-            />
-            <Flex alignItems="center" mb="3">
-              <label htmlFor="editFileInput">
-                <Button as="span" ml="2" colorScheme="teal">
-                  Change Image
-                </Button>
-              </label>
-              <input
-                id="editFileInput"
-                type="file"
-                style={{ display: "none" }}
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    setEditedGameListData({
-                      ...editedGameListData,
-                      game_thumbnail: URL.createObjectURL(file),
-                    });
-                    setSelectedFile(file);
-                  }
-                }}
+            <Box>
+              <Text mb="1" color="gray.600">
+                Game Title
+              </Text>
+              <Input
+                mb="3"
+                placeholder="Game Title"
+                value={editedGameListData?.game_title || ""}
+                onChange={(e) =>
+                  setEditedGameListData({
+                    ...editedGameListData,
+                    game_title: e.target.value,
+                  })
+                }
+                required
               />
-            </Flex>
-            {editedGameListData && editedGameListData.game_thumbnail && (
-              <Box mb="3">
-                <Image
-                  src={editedGameListData.game_thumbnail}
-                  alt="GameList Image Preview"
-                  w="100%"
-                  h="200px"
-                  objectFit="cover"
-                />
-                {selectedFile && (
-                  <Text color="gray.600" mt="2" ml="3">
-                    {selectedFile.name}
-                  </Text>
-                )}
-              </Box>
-            )}
+            </Box>
+            <Box>
+              <Text mb="1" color="gray.600">
+                Game Info
+              </Text>
+              <Input
+                mb="3"
+                placeholder="Game Info"
+                value={editedGameListData?.game_info || ""}
+                onChange={(e) =>
+                  setEditedGameListData({
+                    ...editedGameListData,
+                    game_info: e.target.value,
+                  })
+                }
+                required
+              />
+            </Box>
+            <Box>
+              <Text mb="1" color="gray.600">
+                Game duration seconds
+              </Text>
+              <Input
+                mb="3"
+                placeholder="Game duration seconds"
+                value={editedGameListData?.game_duration_seconds || ""}
+                onChange={(e) =>
+                  setEditedGameListData({
+                    ...editedGameListData,
+                    game_duration_seconds: e.target.value,
+                  })
+                }
+                required
+              />
+            </Box>
+            <Box>
+              <Text mb="1" color="gray.600">
+                Game freeze seconds
+              </Text>
+              <Input
+                mb="3"
+                placeholder="Game freeze seconds"
+                value={editedGameListData?.game_freeze_seconds || ""}
+                onChange={(e) =>
+                  setEditedGameListData({
+                    ...editedGameListData,
+                    game_freeze_seconds: e.target.value,
+                  })
+                }
+                required
+              />
+            </Box>
+            <Box>
+              <Text mb="1" color="gray.600">
+                Game max price
+              </Text>
+              <Input
+                mb="3"
+                placeholder="Game max price"
+                value={editedGameListData?.game_max_price || ""}
+                onChange={(e) =>
+                  setEditedGameListData({
+                    ...editedGameListData,
+                    game_max_price: e.target.value,
+                  })
+                }
+                required
+              />
+            </Box>
+            <Box>
+              <Text mb="1" color="gray.600">
+                Game Not Played
+              </Text>
+              <Select
+                mb="3"
+                placeholder="Game Not Played"
+                value={editedGameListData?.game_not_played || ""}
+                onChange={(e) =>
+                  setEditedGameListData({
+                    ...editedGameListData,
+                    game_not_played: e.target.value,
+                  })
+                }
+                required
+              >
+                <option value="0">True</option>
+                <option value="1">False</option>
+              </Select>
+            </Box>
+            <Box>
+              <Text mb="1" color="gray.600">
+                Game starting price
+              </Text>
+              <Input
+                mb="3"
+                placeholder="Game starting price"
+                value={editedGameListData?.game_starting_price || ""}
+                onChange={(e) =>
+                  setEditedGameListData({
+                    ...editedGameListData,
+                    game_starting_price: e.target.value,
+                  })
+                }
+                required
+              />
+            </Box>
+            <Box>
+              <Text mb="1" color="gray.600">
+                Game Status
+              </Text>
+              <Select
+                mb="3"
+                placeholder="Game Status"
+                value={editedGameListData?.game_status || ""}
+                onChange={(e) =>
+                  setEditedGameListData({
+                    ...editedGameListData,
+                    game_status: e.target.value,
+                  })
+                }
+                required
+              >
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="pending">Pending</option>
+              </Select>
+            </Box>
+            {/* Add more Box components with Text and Input/Select components for other fields */}
           </ModalBody>
           <ModalFooter>
             <Button
