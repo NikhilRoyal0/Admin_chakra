@@ -75,12 +75,12 @@ export const fetchLinkItems = () => (dispatch) => {
           icon: MdCategory,
           href: "/game/game-category",
         },
-        {
-          id: 32,
-          title: "Game List",
-          icon: TbGoGame,
-          href: "/game/game-list",
-        },
+        // {
+        //   id: 32,
+        //   title: "Game List",
+        //   icon: TbGoGame,
+        //   href: "/game/game-list",
+        // },
       ],
     },
     {

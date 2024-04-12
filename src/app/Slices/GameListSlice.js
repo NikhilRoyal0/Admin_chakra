@@ -68,7 +68,7 @@ export const AddGameListData = (formData) => async () => {
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       }
     );
@@ -85,7 +85,7 @@ export const updateGameListData = (game_id, formData) => async (dispatch) => {
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       }
     );

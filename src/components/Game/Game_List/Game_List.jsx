@@ -15,6 +15,7 @@ import {
   ModalFooter,
   Image,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 import { BeatLoader } from "react-spinners";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,8 +28,12 @@ import {
   deleteGameListData,
   updateGameListData,
 } from "../../../app/Slices/GameListSlice";
+import {
+  fetchCategoryData,
+  selectCategoryData,
+} from "../../../app/Slices/CategorySlice";
 
-export default function GameGameList() {
+export default function GameList() {
   const [isAddGameListModalOpen, setIsAddGameListModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [newGameListData, setNewGameListData] = useState({
@@ -46,19 +51,21 @@ export default function GameGameList() {
   });
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [GameListToDelete, setGameListToDelete] = useState(null);
+  const [gameListToDelete, setGameListToDelete] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editedGameListData, setEditedGameListData] = useState(null);
   const [isSaveLoading, setIsSaveLoading] = useState(false);
 
-  const GameListData = useSelector(selectGameListData);
+  const gameListData = useSelector(selectGameListData);
+  const categoryData = useSelector(selectCategoryData);
   const isLoading = useSelector(selectGameListLoading);
   const error = useSelector(selectGameListError);
   const dispatch = useDispatch();
-  const Toast = useToast();
+  const toast = useToast();
 
   useEffect(() => {
     dispatch(fetchGameListData());
+    dispatch(fetchCategoryData());
   }, [dispatch]);
 
   const handleAddGameList = (e) => {
@@ -68,22 +75,27 @@ export default function GameGameList() {
 
     const formData = new FormData();
     formData.append("game_title", newGameListData.game_title);
-    formData.append("game_thumbnail", newGameListData.game_thumbnail);
-    formData.append("game_background_image", newGameListData.game_background_image);
-    formData.append("game_starting_price", newGameListData.game_starting_price);
-    formData.append("game_status", newGameListData.game_status);
-    formData.append("game_duration_seconds", newGameListData.game_duration_seconds);
+    formData.append("game_info", newGameListData.game_info);
+    formData.append(
+      "game_duration_seconds",
+      newGameListData.game_duration_seconds
+    );
     formData.append("game_freeze_seconds", newGameListData.game_freeze_seconds);
-    formData.append("game_category_id", newGameListData.game_category_id);
-    formData.append("game_secondary_background_image", newGameListData.game_secondary_background_image);
+    formData.append("game_starting_price", newGameListData.game_starting_price);
     formData.append("game_max_price", newGameListData.game_max_price);
     formData.append("game_not_played", newGameListData.game_not_played);
-    
+    formData.append("game_category_id", newGameListData.game_category_id);
+    formData.append("game_status", newGameListData.game_status);
+
+    if (selectedFile) {
+      formData.append("game_thumbnail", selectedFile);
+    }
+
     dispatch(AddGameListData(formData))
       .then(() => {
         setIsSaveLoading(false);
-        Toast({
-          title: "GameList updated/deleted successfully",
+        toast({
+          title: "GameList added successfully",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -91,16 +103,14 @@ export default function GameGameList() {
         });
         setNewGameListData({
           game_title: "",
-          game_thumbnail: "",
-          game_background_image: "",
-          game_starting_price: "",
-          game_status: "",
+          game_info: "",
           game_duration_seconds: "",
           game_freeze_seconds: "",
-          game_category_id: "",
-          game_secondary_background_image: "",
+          game_starting_price: "",
           game_max_price: "",
           game_not_played: "",
+          game_category_id: "",
+          game_status: "",
         });
         setSelectedFile(null);
         setIsAddGameListModalOpen(false);
@@ -109,7 +119,7 @@ export default function GameGameList() {
       .catch((error) => {
         setIsSaveLoading(false);
         console.error("Error adding GameList:", error);
-        Toast({
+        toast({
           title: "Failed to add GameList",
           status: "error",
           duration: 3000,
@@ -121,45 +131,47 @@ export default function GameGameList() {
 
   const handleDeleteGameList = () => {
     setIsSaveLoading(true);
-    dispatch(deleteGameListData(GameListToDelete.GameList_id))
+    dispatch(deleteGameListData(gameListToDelete.game_id))
       .then(() => {
         setIsDeleteModalOpen(false);
         setIsSaveLoading(false);
-        Toast({
-          title: "GameList added/updated successfully",
+        toast({
+          title: "GameList deleted successfully",
           status: "success",
           duration: 3000,
           isClosable: true,
           position: "top-right",
         });
+        dispatch(fetchGameListData());
       })
       .catch((error) => {
         setIsSaveLoading(false);
-        Toast({
+        toast({
           title: "Failed to delete GameList",
           status: "error",
           duration: 3000,
           isClosable: true,
           position: "top-right",
         });
-        console.log("Error deleting PlayRecords: ", error);
+        console.error("Error deleting GameList:", error);
       });
   };
 
   const handleSaveChanges = () => {
     setIsSaveLoading(true);
-    const formData = new FormData();
-    // Append updated GameList data to FormData
-    formData.append("GameList_title", editedGameListData.GameList_title);
-    formData.append("GameList_info", editedGameListData.GameList_info);
-    formData.append("GameList_type", editedGameListData.GameList_type);
-
-    dispatch(updateGameListData(editedGameListData.GameList_id, formData))
-      .then(() => {
+  
+    // Destructure editedGameListData and exclude game_id
+    const { game_id, ...updatedGameData } = editedGameListData;
+  
+    // Append the selected file if it exists
+    updatedGameData.game_thumbnail = selectedFile || updatedGameData.game_thumbnail;
+  
+    dispatch(updateGameListData(updatedGameData.game_id, formData))
+    .then(() => {
         setIsEditModalOpen(false);
         setIsSaveLoading(false);
-        Toast({
-          title: "GameList added/updated successfully",
+        toast({
+          title: "GameList updated successfully",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -168,16 +180,18 @@ export default function GameGameList() {
       })
       .catch((error) => {
         setIsSaveLoading(false);
-        Toast({
-          title: "Failed to updating GameList",
+        toast({
+          title: "Failed to update GameList",
           status: "error",
           duration: 3000,
           isClosable: true,
           position: "top-right",
         });
-        console.log("Error updating PlayRecords: ", error);
+        console.error("Error updating GameList:", error);
       });
   };
+  
+  
 
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
@@ -185,24 +199,24 @@ export default function GameGameList() {
       setSelectedFile(file);
       setNewGameListData({
         ...newGameListData,
-        GameList_image: URL.createObjectURL(file),
+        game_thumbnail: URL.createObjectURL(file),
       });
     } else {
       setSelectedFile(null);
       setNewGameListData({
         ...newGameListData,
-        GameList_image: null,
+        game_thumbnail: null,
       });
     }
   };
 
-  const handleDeleteConfirmation = (GameList) => {
-    setGameListToDelete(GameList);
+  const handleDeleteConfirmation = (gameList) => {
+    setGameListToDelete(gameList);
     setIsDeleteModalOpen(true);
   };
 
-  const handleEditGameList = (GameList) => {
-    setEditedGameListData(GameList);
+  const handleEditGameList = (gameList) => {
+    setEditedGameListData(gameList);
     setIsEditModalOpen(true);
   };
 
@@ -237,7 +251,7 @@ export default function GameGameList() {
         </Button>
       </Flex>
       <Flex flexWrap="wrap" justifyContent="space-around">
-        {GameListData.map((GameList, index) => (
+        {gameListData.map((gameList, index) => (
           <Box
             key={index}
             w="300px"
@@ -247,35 +261,35 @@ export default function GameGameList() {
             m="2"
           >
             <Image
-              src={GameList.game_thumbnail}
-              alt={GameList.game_title}
+              src={gameList.game_thumbnail}
+              alt={gameList.game_title}
               w="100%"
               h="200px"
               objectFit="cover"
             />
             <Box p="6">
               <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight">
-                {GameList.game_title}
+                {gameList.game_title}
               </Box>
               <Box>
                 <Text mt="2" color="gray.600">
-                  {GameList.game_starting_price}
+                  {gameList.game_starting_price}
                 </Text>
               </Box>
               <Box>
                 <Text mt="2" color="gray.600">
-                  {GameList.game_max_price}
+                  {gameList.game_max_price}
                 </Text>
               </Box>
               <Box>
                 <Text mt="2" color="gray.600">
-                  {GameList.game_status}
+                  {gameList.game_status}
                 </Text>
               </Box>
               <Flex mt="4">
                 <Button
                   colorScheme="blue"
-                  onClick={() => handleEditGameList(GameList)}
+                  onClick={() => handleEditGameList(gameList)}
                   pl={3}
                   pr={3}
                 >
@@ -283,7 +297,7 @@ export default function GameGameList() {
                 </Button>
                 <Button
                   colorScheme="red"
-                  onClick={() => handleDeleteConfirmation(GameList)}
+                  onClick={() => handleDeleteConfirmation(gameList)}
                   ml={3}
                   pl={3}
                   pr={3}
@@ -309,11 +323,11 @@ export default function GameGameList() {
               <Input
                 mb="3"
                 placeholder="GameList Title"
-                value={newGameListData.GameList_title}
+                value={newGameListData.game_title}
                 onChange={(e) =>
                   setNewGameListData({
                     ...newGameListData,
-                    GameList_title: e.target.value,
+                    game_title: e.target.value,
                   })
                 }
                 required
@@ -321,31 +335,116 @@ export default function GameGameList() {
               <Input
                 mb="3"
                 placeholder="GameList Info"
-                value={newGameListData.GameList_info}
+                value={newGameListData.game_info}
                 onChange={(e) =>
                   setNewGameListData({
                     ...newGameListData,
-                    GameList_info: e.target.value,
+                    game_info: e.target.value,
                   })
                 }
                 required
               />
               <Input
                 mb="3"
-                placeholder="GameList Type"
-                value={newGameListData.GameList_type}
+                placeholder="Game duration seconds"
+                value={newGameListData.game_duration_seconds}
                 onChange={(e) =>
                   setNewGameListData({
                     ...newGameListData,
-                    GameList_type: e.target.value,
+                    game_duration_seconds: e.target.value,
                   })
                 }
                 required
               />
-              {newGameListData.GameList_image && (
+              <Input
+                mb="3"
+                placeholder="Game freeze seconds"
+                value={newGameListData.game_freeze_seconds}
+                onChange={(e) =>
+                  setNewGameListData({
+                    ...newGameListData,
+                    game_freeze_seconds: e.target.value,
+                  })
+                }
+                required
+              />
+              <Input
+                mb="3"
+                placeholder="Game starting price "
+                value={newGameListData.game_starting_price}
+                onChange={(e) =>
+                  setNewGameListData({
+                    ...newGameListData,
+                    game_starting_price: e.target.value,
+                  })
+                }
+                required
+              />
+              <Input
+                mb="3"
+                placeholder="game_max_price "
+                value={newGameListData.game_max_price}
+                onChange={(e) =>
+                  setNewGameListData({
+                    ...newGameListData,
+                    game_max_price: e.target.value,
+                  })
+                }
+                required
+              />
+              <Input
+                mb="3"
+                placeholder="Game not played "
+                value={newGameListData.game_not_played}
+                onChange={(e) =>
+                  setNewGameListData({
+                    ...newGameListData,
+                    game_not_played: e.target.value,
+                  })
+                }
+                required
+              />
+              <Select
+                mb="3"
+                placeholder="Select Category"
+                value={newGameListData.game_category_id}
+                onChange={(e) =>
+                  setNewGameListData({
+                    ...newGameListData,
+                    game_category_id: e.target.value,
+                  })
+                }
+                isRequired
+              >
+                {categoryData.map((category) => (
+                  <option
+                    key={category.category_id}
+                    value={category.category_id}
+                  >
+                    {category.category_title}
+                  </option>
+                ))}
+              </Select>
+              <Select
+                mb="3"
+                placeholder="Select Status"
+                value={newGameListData?.game_status || ""}
+                onChange={(e) =>
+                  setNewGameListData({
+                    ...newGameListData,
+                    game_status: e.target.value,
+                  })
+                }
+                required
+              >
+                <option value="pending">Pending</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </Select>
+              {newGameListData.game_thumbnail && (
                 <Box mb="3">
                   <Image
-                    src={newGameListData.GameList_image}
+                    src={newGameListData.game_thumbnail}
                     alt="GameList Image Preview"
                     w="100%"
                     h="200px"
@@ -402,8 +501,7 @@ export default function GameGameList() {
           <ModalHeader>Confirm Deletion</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Are you sure you want to delete "{GameListToDelete?.GameList_title}
-            "?
+            Are you sure you want to delete "{gameListToDelete?.game_title}"?
           </ModalBody>
           <ModalFooter>
             <Button
@@ -431,11 +529,11 @@ export default function GameGameList() {
             <Input
               mb="3"
               placeholder="GameList Title"
-              value={editedGameListData?.GameList_title || ""}
+              value={editedGameListData?.game_title || ""}
               onChange={(e) =>
                 setEditedGameListData({
                   ...editedGameListData,
-                  GameList_title: e.target.value,
+                  game_title: e.target.value,
                 })
               }
               required
@@ -443,23 +541,23 @@ export default function GameGameList() {
             <Input
               mb="3"
               placeholder="GameList Info"
-              value={editedGameListData?.GameList_info || ""}
+              value={editedGameListData?.game_info || ""}
               onChange={(e) =>
                 setEditedGameListData({
                   ...editedGameListData,
-                  GameList_info: e.target.value,
+                  game_info: e.target.value,
                 })
               }
               required
             />
             <Input
               mb="3"
-              placeholder="GameList Type"
-              value={editedGameListData?.GameList_type || ""}
+              placeholder="Game Not Played"
+              value={editedGameListData?.game_not_played || ""}
               onChange={(e) =>
                 setEditedGameListData({
                   ...editedGameListData,
-                  GameList_type: e.target.value,
+                  game_not_played: e.target.value,
                 })
               }
               required
@@ -479,17 +577,17 @@ export default function GameGameList() {
                   if (file) {
                     setEditedGameListData({
                       ...editedGameListData,
-                      GameList_image: URL.createObjectURL(file),
+                      game_thumbnail: URL.createObjectURL(file),
                     });
                     setSelectedFile(file);
                   }
                 }}
               />
             </Flex>
-            {editedGameListData && editedGameListData.GameList_image && (
+            {editedGameListData && editedGameListData.game_thumbnail && (
               <Box mb="3">
                 <Image
-                  src={editedGameListData.GameList_image}
+                  src={editedGameListData.game_thumbnail}
                   alt="GameList Image Preview"
                   w="100%"
                   h="200px"

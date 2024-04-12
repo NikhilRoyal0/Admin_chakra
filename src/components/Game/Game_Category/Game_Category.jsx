@@ -110,6 +110,7 @@ export default function GameCategory() {
           isClosable: true,
           position: "top-right",
         });
+        dispatch(fetchCategoryData());
       })
       .catch((error) => {
         setIsSaveLoading(false);
@@ -120,8 +121,7 @@ export default function GameCategory() {
           isClosable: true,
           position: "top-right",
         });
-        console.log("Error deleting PlayRecords: ",error)
-
+        console.log("Error deleting PlayRecords: ", error);
       });
   };
 
@@ -154,8 +154,7 @@ export default function GameCategory() {
           isClosable: true,
           position: "top-right",
         });
-        console.log("Error updating PlayRecords: ",error)
-
+        console.log("Error updating PlayRecords: ", error);
       });
   };
 
@@ -220,11 +219,14 @@ export default function GameCategory() {
         {categoryData.map((category, index) => (
           <Box
             key={index}
-            w="300px"
+            w={["100%", "75%", "50%"]}
+            maxW="300px"
             borderWidth="1px"
             borderRadius="lg"
             overflow="hidden"
             m="2"
+            transition="all 0.3s ease-in-out"
+            _hover={{ boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}
           >
             <Image
               src={category.category_image}
@@ -232,9 +234,16 @@ export default function GameCategory() {
               w="100%"
               h="200px"
               objectFit="cover"
+              borderRadius="lg"
             />
             <Box p="6">
-              <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight">
+              <Box
+                mt="1"
+                fontWeight="semibold"
+                as="h4"
+                lineHeight="tight"
+                fontSize="xl"
+              >
                 {category.category_title}
               </Box>
               <Box>
@@ -265,7 +274,6 @@ export default function GameCategory() {
           </Box>
         ))}
       </Flex>
-
       <Modal
         isOpen={isAddCategoryModalOpen}
         onClose={() => setIsAddCategoryModalOpen(false)}
