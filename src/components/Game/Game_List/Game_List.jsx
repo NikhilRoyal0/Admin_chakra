@@ -160,10 +160,8 @@ export default function GameList() {
   const handleSaveChanges = () => {
     setIsSaveLoading(true);
   
-    // Destructure editedGameListData and exclude game_id
     const { game_id, ...updatedGameData } = editedGameListData;
   
-    // Append the selected file if it exists
     updatedGameData.game_thumbnail = selectedFile || updatedGameData.game_thumbnail;
   
     dispatch(updateGameListData(updatedGameData.game_id, formData))
