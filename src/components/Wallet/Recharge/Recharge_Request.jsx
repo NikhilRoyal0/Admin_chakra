@@ -441,56 +441,67 @@ export default function RechargeList() {
       </Modal>
 
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit Recharge</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Input
-              mb="3"
-              placeholder="Remarks"
-              value={editedRechargeData?.remarks || ""}
-              onChange={(e) =>
-                setEditedRechargeData({
-                  ...editedRechargeData,
-                  remarks: e.target.value,
-                })
-              }
-              required
-            />
-            <Select
-              mb="3"
-              placeholder="Select Status"
-              value={editedRechargeData?.status || ""}
-              onChange={(e) =>
-                setEditedRechargeData({
-                  ...editedRechargeData,
-                  status: e.target.value,
-                })
-              }
-              required
-            >
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="failed">Failed</option>
-            </Select>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="teal"
-              mr={3}
-              onClick={handleSaveChanges}
-              isLoading={isSaveLoading}
-              spinner={<BeatLoader size={8} color="white" />}
-            >
-              Save Changes
-            </Button>
-            <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Edit Recharge</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Remarks
+        </Text>
+        <Input
+          mb="3"
+          placeholder="Remarks"
+          value={editedRechargeData?.remarks || ""}
+          onChange={(e) =>
+            setEditedRechargeData({
+              ...editedRechargeData,
+              remarks: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Select Status
+        </Text>
+        <Select
+          mb="3"
+          placeholder="Select Status"
+          value={editedRechargeData?.status || ""}
+          onChange={(e) =>
+            setEditedRechargeData({
+              ...editedRechargeData,
+              status: e.target.value,
+            })
+          }
+          required
+        >
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="failed">Failed</option>
+        </Select>
+      </Box>
+    </ModalBody>
+    <ModalFooter>
+      <Button
+        colorScheme="teal"
+        mr={3}
+        onClick={handleSaveChanges}
+        isLoading={isSaveLoading}
+        spinner={<BeatLoader size={8} color="white" />}
+      >
+        Save Changes
+      </Button>
+      <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
     </Box>
   );
 }

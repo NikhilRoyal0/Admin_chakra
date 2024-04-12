@@ -405,6 +405,9 @@ export default function Refer() {
           <ModalHeader>Edit Refer</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            <Text mb="1" color="gray.600">
+              Status
+            </Text>
             <Select
               mb="3"
               placeholder="Select Status"

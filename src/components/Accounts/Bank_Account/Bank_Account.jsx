@@ -454,91 +454,117 @@ export default function Bank_Account() {
       </Modal>
 
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit Bank Account</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Input
-              mb="3"
-              placeholder="Bank Name"
-              value={editedBankAccountData?.bank_name || ""}
-              onChange={(e) =>
-                setEditedBankAccountData({
-                  ...editedBankAccountData,
-                  bank_name: e.target.value,
-                })
-              }
-              required
-            />
-            <Input
-              mb="3"
-              placeholder="Bank IFSC"
-              value={editedBankAccountData?.bank_ifsc || ""}
-              onChange={(e) =>
-                setEditedBankAccountData({
-                  ...editedBankAccountData,
-                  bank_ifsc: e.target.value,
-                })
-              }
-              required
-            />
-            <Input
-              mb="3"
-              placeholder="Account Number"
-              value={editedBankAccountData?.bank_number || ""}
-              onChange={(e) =>
-                setEditedBankAccountData({
-                  ...editedBankAccountData,
-                  bank_number: e.target.value,
-                })
-              }
-              required
-            />
-            <Input
-              mb="3"
-              placeholder="BankHolder Name"
-              value={editedBankAccountData?.bank_holder_name || ""}
-              onChange={(e) =>
-                setEditedBankAccountData({
-                  ...editedBankAccountData,
-                  bank_holder_name: e.target.value,
-                })
-              }
-              required
-            />
-            <Select
-              mb="3"
-              placeholder="Select Status"
-              value={editedBankAccountData?.bank_status || ""}
-              onChange={(e) =>
-                setEditedBankAccountData({
-                  ...editedBankAccountData,
-                  bank_status: e.target.value,
-                })
-              }
-              required
-            >
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </Select>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="teal"
-              mr={3}
-              onClick={handleSaveChanges}
-              isLoading={isSaveLoading}
-              spinner={<BeatLoader size={8} color="white" />}
-            >
-              Save Changes
-            </Button>
-            <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Edit Bank Account</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Bank Name
+        </Text>
+        <Input
+          mb="3"
+          placeholder="Bank Name"
+          value={editedBankAccountData?.bank_name || ""}
+          onChange={(e) =>
+            setEditedBankAccountData({
+              ...editedBankAccountData,
+              bank_name: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Bank IFSC
+        </Text>
+        <Input
+          mb="3"
+          placeholder="Bank IFSC"
+          value={editedBankAccountData?.bank_ifsc || ""}
+          onChange={(e) =>
+            setEditedBankAccountData({
+              ...editedBankAccountData,
+              bank_ifsc: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Account Number
+        </Text>
+        <Input
+          mb="3"
+          placeholder="Account Number"
+          value={editedBankAccountData?.bank_number || ""}
+          onChange={(e) =>
+            setEditedBankAccountData({
+              ...editedBankAccountData,
+              bank_number: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Bank Holder Name
+        </Text>
+        <Input
+          mb="3"
+          placeholder="Bank Holder Name"
+          value={editedBankAccountData?.bank_holder_name || ""}
+          onChange={(e) =>
+            setEditedBankAccountData({
+              ...editedBankAccountData,
+              bank_holder_name: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Select Status
+        </Text>
+        <Select
+          mb="3"
+          placeholder="Select Status"
+          value={editedBankAccountData?.bank_status || ""}
+          onChange={(e) =>
+            setEditedBankAccountData({
+              ...editedBankAccountData,
+              bank_status: e.target.value,
+            })
+          }
+          required
+        >
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </Select>
+      </Box>
+    </ModalBody>
+    <ModalFooter>
+      <Button
+        colorScheme="teal"
+        mr={3}
+        onClick={handleSaveChanges}
+        isLoading={isSaveLoading}
+        spinner={<BeatLoader size={8} color="white" />}
+      >
+        Save Changes
+      </Button>
+      <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
     </Box>
   );
 }

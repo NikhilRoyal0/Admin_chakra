@@ -410,79 +410,100 @@ export default function UpiList() {
       </Modal>
 
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit UPI</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Input
-              mb="3"
-              placeholder="Upi Title"
-              value={editedUpiData?.upi_title || ""}
-              onChange={(e) =>
-                setEditedUpiData({
-                  ...editedUpiData,
-                  upi_title: e.target.value,
-                })
-              }
-              required
-            />
-            <Input
-              mb="3"
-              placeholder="Upi Code"
-              value={editedUpiData?.upi_code || ""}
-              onChange={(e) =>
-                setEditedUpiData({
-                  ...editedUpiData,
-                  upi_code: e.target.value,
-                })
-              }
-              required
-            />
-            <Input
-              mb="3"
-              placeholder="Upi Hash"
-              value={editedUpiData?.upi_hash || ""}
-              onChange={(e) =>
-                setEditedUpiData({
-                  ...editedUpiData,
-                  upi_hash: e.target.value,
-                })
-              }
-              required
-            />
-            <Select
-              mb="3"
-              placeholder="Select Status"
-              value={editedUpiData?.status || ""}
-              onChange={(e) =>
-                setEditedUpiData({
-                  ...editedUpiData,
-                  status: e.target.value,
-                })
-              }
-              required
-            >
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </Select>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="teal"
-              mr={3}
-              onClick={handleSaveChanges}
-              isLoading={isSaveLoading}
-              spinner={<BeatLoader size={8} color="white" />}
-            >
-              Save Changes
-            </Button>
-            <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Edit UPI</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      <Box>
+        <Text mb="1" color="gray.600">
+          UPI Title
+        </Text>
+        <Input
+          mb="3"
+          placeholder="UPI Title"
+          value={editedUpiData?.upi_title || ""}
+          onChange={(e) =>
+            setEditedUpiData({
+              ...editedUpiData,
+              upi_title: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          UPI Code
+        </Text>
+        <Input
+          mb="3"
+          placeholder="UPI Code"
+          value={editedUpiData?.upi_code || ""}
+          onChange={(e) =>
+            setEditedUpiData({
+              ...editedUpiData,
+              upi_code: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          UPI Hash
+        </Text>
+        <Input
+          mb="3"
+          placeholder="UPI Hash"
+          value={editedUpiData?.upi_hash || ""}
+          onChange={(e) =>
+            setEditedUpiData({
+              ...editedUpiData,
+              upi_hash: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Select Status
+        </Text>
+        <Select
+          mb="3"
+          placeholder="Select Status"
+          value={editedUpiData?.status || ""}
+          onChange={(e) =>
+            setEditedUpiData({
+              ...editedUpiData,
+              status: e.target.value,
+            })
+          }
+          required
+        >
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </Select>
+      </Box>
+    </ModalBody>
+    <ModalFooter>
+      <Button
+        colorScheme="teal"
+        mr={3}
+        onClick={handleSaveChanges}
+        isLoading={isSaveLoading}
+        spinner={<BeatLoader size={8} color="white" />}
+      >
+        Save Changes
+      </Button>
+      <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
     </Box>
   );
 }

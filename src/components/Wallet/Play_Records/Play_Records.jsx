@@ -455,72 +455,88 @@ export default function PlayRecordsList() {
       </Modal>
 
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit PlayRecords</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Input
-              mb="3"
-              placeholder="Amount"
-              value={editedPlayRecordsData?.amount || ""}
-              onChange={(e) =>
-                setEditedPlayRecordsData({
-                  ...editedPlayRecordsData,
-                  amount: e.target.value,
-                })
-              }
-              required
-            />
-            <Select
-              mb="3"
-              placeholder="Select Bid Choice"
-              value={editedPlayRecordsData?.bid_choice || ""}
-              onChange={(e) =>
-                setEditedPlayRecordsData({
-                  ...editedPlayRecordsData,
-                  bid_choice: e.target.value,
-                })
-              }
-              required
-            >
-              <option value="choice1">Choice 1</option>
-              <option value="choice2">Choice 2</option>
-              <option value="choice3">Choice 3</option>
-            </Select>
-            <Select
-              mb="3"
-              placeholder="Select Status"
-              value={editedPlayRecordsData?.status || ""}
-              onChange={(e) =>
-                setEditedPlayRecordsData({
-                  ...editedPlayRecordsData,
-                  status: e.target.value,
-                })
-              }
-              required
-            >
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-              <option value="failed">Failed</option>
-            </Select>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="teal"
-              mr={3}
-              onClick={handleSaveChanges}
-              isLoading={isSaveLoading}
-              spinner={<BeatLoader size={8} color="white" />}
-            >
-              Save Changes
-            </Button>
-            <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Edit PlayRecords</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Amount
+        </Text>
+        <Input
+          mb="3"
+          placeholder="Amount"
+          value={editedPlayRecordsData?.amount || ""}
+          onChange={(e) =>
+            setEditedPlayRecordsData({
+              ...editedPlayRecordsData,
+              amount: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Select Bid Choice
+        </Text>
+        <Select
+          mb="3"
+          placeholder="Select Bid Choice"
+          value={editedPlayRecordsData?.bid_choice || ""}
+          onChange={(e) =>
+            setEditedPlayRecordsData({
+              ...editedPlayRecordsData,
+              bid_choice: e.target.value,
+            })
+          }
+          required
+        >
+          <option value="choice1">Choice 1</option>
+          <option value="choice2">Choice 2</option>
+          <option value="choice3">Choice 3</option>
+        </Select>
+      </Box>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Select Status
+        </Text>
+        <Select
+          mb="3"
+          placeholder="Select Status"
+          value={editedPlayRecordsData?.status || ""}
+          onChange={(e) =>
+            setEditedPlayRecordsData({
+              ...editedPlayRecordsData,
+              status: e.target.value,
+            })
+          }
+          required
+        >
+          <option value="pending">Pending</option>
+          <option value="completed">Completed</option>
+          <option value="failed">Failed</option>
+        </Select>
+      </Box>
+    </ModalBody>
+    <ModalFooter>
+      <Button
+        colorScheme="teal"
+        mr={3}
+        onClick={handleSaveChanges}
+        isLoading={isSaveLoading}
+        spinner={<BeatLoader size={8} color="white" />}
+      >
+        Save Changes
+      </Button>
+      <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
     </Box>
   );
 }

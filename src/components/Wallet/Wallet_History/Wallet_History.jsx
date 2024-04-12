@@ -435,40 +435,46 @@ export default function WalletHistoryList() {
       </Modal>
 
       <Modal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Edit WalletHistory</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Input
-              mb="3"
-              placeholder="Remarks"
-              value={editedWalletHistoryData?.remarks || ""}
-              onChange={(e) =>
-                setEditedWalletHistoryData({
-                  ...editedWalletHistoryData,
-                  remarks: e.target.value,
-                })
-              }
-              required
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              colorScheme="teal"
-              mr={3}
-              onClick={handleSaveChanges}
-              isLoading={isSaveLoading}
-              spinner={<BeatLoader size={8} color="white" />}
-            >
-              Save Changes
-            </Button>
-            <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Edit WalletHistory</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody>
+      <Box>
+        <Text mb="1" color="gray.600">
+          Remarks
+        </Text>
+        <Input
+          mb="3"
+          placeholder="Remarks"
+          value={editedWalletHistoryData?.remarks || ""}
+          onChange={(e) =>
+            setEditedWalletHistoryData({
+              ...editedWalletHistoryData,
+              remarks: e.target.value,
+            })
+          }
+          required
+        />
+      </Box>
+    </ModalBody>
+    <ModalFooter>
+      <Button
+        colorScheme="teal"
+        mr={3}
+        onClick={handleSaveChanges}
+        isLoading={isSaveLoading}
+        spinner={<BeatLoader size={8} color="white" />}
+      >
+        Save Changes
+      </Button>
+      <Button variant="ghost" onClick={() => setIsEditModalOpen(false)}>
+        Cancel
+      </Button>
+    </ModalFooter>
+  </ModalContent>
+</Modal>
+
     </Box>
   );
 }
