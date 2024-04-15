@@ -34,15 +34,25 @@ const SidebarContent = ({ onClose, ...rest }) => {
   const pathDirect = pathname;
 
   const [open, setOpen] = useState(null); // state to track which submenu is open
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768); // state to track if screen is small
 
   const handleClick = (index, hasSubItems) => {
     if (hasSubItems) {
       setOpen(open === index ? null : index); // toggling submenu open/close
+    } else {
+      if (isSmallScreen) {
+        onClose(); // close the sidebar if the screen is small and item or subitem is clicked
+      }
     }
   };
 
   useEffect(() => {
     dispatch(fetchLinkItems());
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [dispatch]);
 
   const LinkItems = useSelector((state) => state.menu.LinkItems);
@@ -190,7 +200,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
         fontSize="2xl"
         fontWeight="bold"
       >
-        Logo
+        Admin Panel
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
