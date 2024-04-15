@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   IconButton,
   Avatar,
@@ -27,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLinkItems } from "../../app/Slices/menuSlice";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import { NavLink } from "react-router-dom";
+import { logout } from "../../utils/Auth";
 
 const SidebarContent = ({ onClose, ...rest }) => {
   const dispatch = useDispatch();
@@ -175,9 +176,14 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    navigate("/logout");
+    logout();
+  };
   return (
     <Flex
-      ml={{ base: 0, md: "72" }} // Adjusted margin for mobile
+      ml={{ base: 0, md: "72" }}
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
@@ -248,7 +254,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <MenuItem>Settings</MenuItem>
               <MenuItem>Billing</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={handleLogout}>Sign out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
