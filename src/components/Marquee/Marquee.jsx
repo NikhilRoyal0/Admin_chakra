@@ -46,11 +46,34 @@ export default function Marquee() {
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Spinner size="xl" />
+      </div>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          color:"red"
+        }}
+      >
+        Error: {error}
+      </div>
+    );
   }
 
   return (
