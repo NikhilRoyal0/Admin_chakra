@@ -45,7 +45,7 @@ export default function Login() {
         setError("Authentication failed. Please check your credentials.");
       }
     } catch (error) {
-      setError("An error occurred. Please try again later.");
+      setError("Invalid Email or Password. Please try again.");
       console.error("Login Error:", error);
     }
   };
