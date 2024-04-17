@@ -38,16 +38,16 @@ export default function GameList() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [newGameListData, setNewGameListData] = useState({
     game_title: "",
-    game_thumbnail: "",
-    game_background_image: "",
+    game_background_image: "jpg",
     game_starting_price: "",
     game_status: "",
     game_duration_seconds: "",
     game_freeze_seconds: "",
     game_category_id: "",
-    game_secondary_background_image: "",
+    game_secondary_background_image: "jpg",
     game_max_price: "",
     game_not_played: "",
+    game_thumbnail: null,
   });
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -75,7 +75,6 @@ export default function GameList() {
 
     const formData = new FormData();
     formData.append("game_title", newGameListData.game_title);
-    formData.append("game_info", newGameListData.game_info);
     formData.append(
       "game_duration_seconds",
       newGameListData.game_duration_seconds
@@ -86,10 +85,10 @@ export default function GameList() {
     formData.append("game_not_played", newGameListData.game_not_played);
     formData.append("game_category_id", newGameListData.game_category_id);
     formData.append("game_status", newGameListData.game_status);
-
-    if (selectedFile) {
-      formData.append("game_thumbnail", selectedFile);
-    }
+    formData.append("game_background_image", "jpg");
+    formData.append("game_secondary_background_image", "jpg");
+    formData.append("game_thumbnail", selectedFile);
+    console.log(formData);
 
     dispatch(AddGameListData(formData))
       .then(() => {
@@ -103,14 +102,16 @@ export default function GameList() {
         });
         setNewGameListData({
           game_title: "",
-          game_info: "",
+          game_thumbnail: null,
+          game_background_image: "",
+          game_starting_price: "",
+          game_status: "",
           game_duration_seconds: "",
           game_freeze_seconds: "",
-          game_starting_price: "",
+          game_category_id: "",
+          game_secondary_background_image: "",
           game_max_price: "",
           game_not_played: "",
-          game_category_id: "",
-          game_status: "",
         });
         setSelectedFile(null);
         setIsAddGameListModalOpen(false);
@@ -212,13 +213,13 @@ export default function GameList() {
     setIsDeleteModalOpen(true);
   };
 
-  const handleEditGameList = (gameList) => {
-    setEditedGameListData({
-      ...gameList,
-      game_id: gameList.game_id, // Ensure you include the game_id
-    });
-    setIsEditModalOpen(true);
-  };
+  // const handleEditGameList = (gameList) => {
+  //   setEditedGameListData({
+  //     ...gameList,
+  //     game_id: gameList.game_id,
+  //   });
+  //   setIsEditModalOpen(true);
+  // };
 
   if (isLoading) {
     return (
@@ -287,14 +288,14 @@ export default function GameList() {
                 </Text>
               </Box>
               <Flex mt="4">
-                <Button
+                {/* <Button
                   colorScheme="blue"
                   onClick={() => handleEditGameList(gameList)}
                   pl={3}
                   pr={3}
                 >
                   Edit
-                </Button>
+                </Button> */}
                 <Button
                   colorScheme="red"
                   onClick={() => handleDeleteConfirmation(gameList)}
@@ -332,23 +333,6 @@ export default function GameList() {
                     setNewGameListData({
                       ...newGameListData,
                       game_title: e.target.value,
-                    })
-                  }
-                  required
-                />
-              </Box>
-              <Box>
-                <Text mb="1" color="gray.600">
-                  Game Info
-                </Text>
-                <Input
-                  mb="3"
-                  placeholder="Game Info"
-                  value={newGameListData.game_info}
-                  onChange={(e) =>
-                    setNewGameListData({
-                      ...newGameListData,
-                      game_info: e.target.value,
                     })
                   }
                   required
@@ -513,6 +497,7 @@ export default function GameList() {
                 </label>
                 <input
                   id="fileInput"
+                  name="game_thumbnail"
                   type="file"
                   style={{ display: "none" }}
                   onChange={handleFileInputChange}
@@ -591,23 +576,7 @@ export default function GameList() {
                 required
               />
             </Box>
-            <Box>
-              <Text mb="1" color="gray.600">
-                Game Info
-              </Text>
-              <Input
-                mb="3"
-                placeholder="Game Info"
-                value={editedGameListData?.game_info || ""}
-                onChange={(e) =>
-                  setEditedGameListData({
-                    ...editedGameListData,
-                    game_info: e.target.value,
-                  })
-                }
-                required
-              />
-            </Box>
+
             <Box>
               <Text mb="1" color="gray.600">
                 Game duration seconds

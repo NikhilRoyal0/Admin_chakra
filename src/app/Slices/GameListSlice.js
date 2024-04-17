@@ -68,7 +68,7 @@ export const AddGameListData = (formData) => async () => {
       formData,
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
         },
       }
     );
