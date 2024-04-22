@@ -7,7 +7,7 @@ import {
   selectAppLoading,
   selectAppError,
 } from "../../../app/Slices/AppSlice";
-import { Box, Input, Button, Spinner, Text } from "@chakra-ui/react";
+import { Box, Input, Button, Spinner, Text, Flex } from "@chakra-ui/react";
 
 export default function AppSettingCard() {
   const [isEditing, setIsEditing] = useState(false);
@@ -52,13 +52,20 @@ export default function AppSettingCard() {
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <Flex justify="center" align="center" h="100vh">
+        <Spinner size="xl" />
+      </Flex>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <Flex justify="center" align="center" h="100vh">
+        <Text color="red">Error: {error}</Text>
+      </Flex>
+    );
   }
-
   return (
     <Box borderWidth="1px" borderRadius="lg" p="4" m="4">
       <Text fontSize="2xl" fontWeight="bold" mb="3">
