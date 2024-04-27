@@ -31,21 +31,21 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate("/");
+      window.location.replace("/dashboard");
     }
   }, [navigate]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const token = await login(email, password);
-      if (token) {
-        navigate("/");
+      await login(email, password);
+      if (isAuthenticated()) {
+        window.location.replace("/dashboard");
       } else {
         setError("Authentication failed. Please check your credentials.");
       }
     } catch (error) {
-      setError("Invalid Email or Password. Please try again.");
+      setError("An error occurred. Please try again later.");
       console.error("Login Error:", error);
     }
   };

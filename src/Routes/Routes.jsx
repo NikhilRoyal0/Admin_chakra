@@ -3,6 +3,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
+  Navigate
 } from "react-router-dom";
 import FullLayout from "../Layouts/FullLayout";
 import Dashboard from "../components/Dashboard/Dashboard";
@@ -30,7 +31,17 @@ const routes = createBrowserRouter(
       <Route path="/register-now" element={<Register />} />
       <Route path="/logout" element={<Logout />} />
 
-      <Route path="/" element={<FullLayout />}>
+      <Route
+        path="/"
+        element={
+          sessionStorage.getItem("isAuthenticated") === "true" ? (
+            <FullLayout />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      >
+        {" "}
         <Route index element={<Dashboard />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/user/user-list" element={<User_List />} />
@@ -41,7 +52,10 @@ const routes = createBrowserRouter(
         <Route path="/wallet/play-records" element={<Play_Records />} />
         <Route path="/wallet/wallet-history" element={<Wallet_History />} />
         <Route path="/wallet/recharge-request" element={<Recharge_Request />} />
-        <Route path="/wallet/withdrawal-request" element={<Withdrawal_Request />} />
+        <Route
+          path="/wallet/withdrawal-request"
+          element={<Withdrawal_Request />}
+        />
         <Route path="/setting/app-setting" element={<App_Setting />} />
         <Route path="/refer" element={<Refer />} />
         <Route path="/marquee" element={<Marquee />} />

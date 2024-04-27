@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const isAuthenticated = () => {
-  return sessionStorage.getItem("token") !== null;
+  return sessionStorage.getItem("isAuthenticated") === "true";
 };
 
 export const login = async (Email, Password) => {
@@ -17,9 +17,7 @@ export const login = async (Email, Password) => {
     );
     const { jwtToken } = response.data.data;
 
-    sessionStorage.setItem("token", jwtToken);
-
-    return jwtToken;
+    sessionStorage.setItem("isAuthenticated", "true");
   } catch (error) {
     console.error("Login Error:", error);
     throw new Error("Failed to login. Please check your credentials.");
@@ -27,7 +25,7 @@ export const login = async (Email, Password) => {
 };
 
 export const logout = () => {
-  sessionStorage.removeItem("token");
+  sessionStorage.removeItem("isAuthenticated");
 };
 
 export const getjwtToken = () => {

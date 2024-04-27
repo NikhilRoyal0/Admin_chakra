@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {
   Box,
   Button,
@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../../utils/Auth";
 
 export default function Logout() {
   const navigate = useNavigate();
@@ -17,6 +18,11 @@ export default function Logout() {
   const handleGoToLogin = () => {
     navigate("/login");
   };
+  useEffect(() => {
+    if (location.pathname === "/logout") {
+      logout();
+    }
+  }, [location.pathname]);
 
   return (
     <Center h="100vh">
