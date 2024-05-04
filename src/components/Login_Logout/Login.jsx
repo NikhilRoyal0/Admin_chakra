@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Button,
   Checkbox,
@@ -18,6 +19,7 @@ import { login, isAuthenticated } from "../../utils/Auth";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
+import loginImg from "../../assets/login.png"
 
 export default function Login() {
   const showImage = useBreakpointValue({ base: false, md: true });
@@ -26,6 +28,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [cardHeight, setCardHeight] = useState(0); // State to store card height
 
   const navigate = useNavigate();
 
@@ -55,20 +58,25 @@ export default function Login() {
       <Flex direction="row" align="center">
         <Card
           variant="outlined"
-          maxW={"lg"}
           boxShadow={"xl"}
           mb={showImage ? 8 : 0}
+          ref={(card) => {
+            // Calculate and set card height
+            if (card && !cardHeight) {
+              setCardHeight(card.offsetHeight);
+            }
+          }}
         >
-          <Stack spacing={8} p={8}>
-            <Heading fontSize={"2xl"} textAlign={"center"}>
-              Sign in to your account
-            </Heading>
+          <Stack spacing={8} p={8} direction="row">
             {error && (
               <Text color={"red.500"} textAlign={"center"}>
                 {error}
               </Text>
             )}
             <form onSubmit={handleSubmit}>
+              <Heading fontSize={"2xl"} textAlign={"center"} mb={10} mt={10}>
+                Sign in to your account
+              </Heading>
               <FormControl id="email">
                 <FormLabel>Email address</FormLabel>
                 <Input
@@ -100,8 +108,7 @@ export default function Login() {
                   align={"start"}
                   justify={"space-between"}
                 >
-                  <Checkbox>Remember me</Checkbox>
-                  <Text color={"blue.500"}>Forgot Password?</Text>
+                  <Checkbox mt={2}>Remember me</Checkbox>
                 </Stack>
                 <Button
                   type="submit"
@@ -113,21 +120,16 @@ export default function Login() {
                 </Button>
               </Stack>
             </form>
+            {showImage && (
+              <Image
+                alt={"Login Image"}
+                objectFit={"cover"}
+                height={cardHeight} // Set image height to card height
+                src={loginImg}
+              />
+            )}
           </Stack>
         </Card>
-        {showImage && (
-          <Flex justify="center">
-            <Image
-              alt={"Login Image"}
-              objectFit={"cover"}
-              boxShadow={"xl"}
-              height={330}
-              src={
-                "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80"
-              }
-            />
-          </Flex>
-        )}
       </Flex>
     </Center>
   );
