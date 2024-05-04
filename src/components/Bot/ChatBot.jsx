@@ -1,35 +1,38 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Button, Input, Box, Heading, Flex } from '@chakra-ui/react';
+import React, { useState, useRef, useEffect } from "react";
+import { Button, Input, Box, Heading, Flex } from "@chakra-ui/react";
 
 const ChatBot = () => {
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [inputMessage, setInputMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    // Scroll chat to bottom when new message is added
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
   const sendMessage = () => {
-    if (inputMessage.trim() === '') return;
+    if (inputMessage.trim() === "") return;
 
-    // Send user message
-    setMessages([...messages, { text: inputMessage, sender: 'user' }]);
-    setInputMessage('');
+    const newMessage = { text: inputMessage, sender: "user" };
+    setMessages([...messages, newMessage]);
+    setInputMessage("");
 
-    // Simulate bot response after a short delay
     setTimeout(() => {
       const botResponse = getBotResponse(inputMessage);
-      setMessages([...messages, { text: botResponse, sender: 'bot' }]);
-    }, 500);
+      setMessages([
+        ...messages,
+        newMessage,
+        { text: botResponse, sender: "bot" },
+      ]);
+    }, 700);
   };
 
   const getBotResponse = (message) => {
-    return `You said: ${message}`;
+    return "Services are currently not available, try again later.";
   };
 
   const toggleChatBot = () => {
@@ -60,24 +63,40 @@ const ChatBot = () => {
           <Heading as="h2" size="md" mb="4">
             Chat Bot
           </Heading>
-          <Box
-            flex="1"
-            overflowY="auto"
-            mb="4"
-            ref={chatContainerRef}
-          >
+          <Box flex="1" overflowY="auto" mb="4" ref={chatContainerRef}>
             {messages.map((message, index) => (
               <Box
                 key={index}
                 p="2"
                 borderRadius="md"
-                bg={message.sender === 'user' ? 'blue.100' : 'green.100'}
-                textAlign={message.sender === 'user' ? 'right' : 'left'}
+                bg={message.sender === "user" ? "blue.100" : "green.100"}
+                textAlign={message.sender === "user" ? "left" : "left"}
+                my="2"
+                mx={message.sender === "user" ? "0" : "2"}
+                display="flex"
+                flexDirection="column"
+                maxWidth="fit-content"
+                minWidth="5rem"
+                wordWrap="break-word"
+                position="relative"
               >
-                {message.text}
+                <Box mb={4}>{message.text}</Box>
+                <Box
+                  fontSize="xs"
+                  color="gray.500"
+                  position="absolute" 
+                  bottom="1"
+                  right="3"
+                >
+                  {new Date().toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </Box>
               </Box>
             ))}
           </Box>
+
           <Flex>
             <Input
               value={inputMessage}
@@ -108,7 +127,7 @@ const ChatBot = () => {
         boxShadow="lg"
         onClick={toggleChatBot}
       >
-        {isOpen ? 'Close' : 'Help'}
+        {isOpen ? "Close" : "Help"}
       </Button>
     </div>
   );
