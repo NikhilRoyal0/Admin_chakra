@@ -19,7 +19,7 @@ import { login, isAuthenticated } from "../../utils/Auth";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdVisibilityOff, MdVisibility } from "react-icons/md";
-import loginImg from "../../assets/login.png"
+import loginImg from "../../assets/login.png";
 
 export default function Login() {
   const showImage = useBreakpointValue({ base: false, md: true });
@@ -28,7 +28,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [cardHeight, setCardHeight] = useState(0); // State to store card height
+  const [cardHeight, setCardHeight] = useState(0);
 
   const navigate = useNavigate();
 
@@ -61,18 +61,12 @@ export default function Login() {
           boxShadow={"xl"}
           mb={showImage ? 8 : 0}
           ref={(card) => {
-            // Calculate and set card height
             if (card && !cardHeight) {
               setCardHeight(card.offsetHeight);
             }
           }}
         >
           <Stack spacing={8} p={8} direction="row">
-            {error && (
-              <Text color={"red.500"} textAlign={"center"}>
-                {error}
-              </Text>
-            )}
             <form onSubmit={handleSubmit}>
               <Heading fontSize={"2xl"} textAlign={"center"} mb={10} mt={10}>
                 Sign in to your account
@@ -110,6 +104,11 @@ export default function Login() {
                 >
                   <Checkbox mt={2}>Remember me</Checkbox>
                 </Stack>
+                {error && (
+                  <Text color={"red.500"} textAlign={"center"}>
+                    {error}
+                  </Text>
+                )}
                 <Button
                   type="submit"
                   colorScheme={"blue"}
@@ -124,7 +123,7 @@ export default function Login() {
               <Image
                 alt={"Login Image"}
                 objectFit={"cover"}
-                height={cardHeight} // Set image height to card height
+                height={cardHeight}
                 src={loginImg}
               />
             )}
