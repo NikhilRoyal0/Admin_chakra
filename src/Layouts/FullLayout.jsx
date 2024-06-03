@@ -12,7 +12,7 @@ const FullLayout = () => {
       <Box flex="1" ml={{ base: 0, md: 72 }} p="0">
         <Box minHeight="calc(100vh - 100px)">
           <Outlet />
-          <ChatBot/>
+          {/* <ChatBot/> */}
         </Box>
         <Footer />
       </Box>
